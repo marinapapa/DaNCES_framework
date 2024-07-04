@@ -1,0 +1,112 @@
+{
+    "Pred": {
+        "N": 1,
+        "shape": "arrow.ac",
+        "scale": 1.5,
+
+        "InitCondit": {
+          "type": "random",
+          "radius": 100
+        },
+
+      "aero": {
+        "betaIn": 90.0,
+        "maxSpeed": 30,
+        "minSpeed": 10,
+        "cruiseSpeed": 18,
+        "bodyMass": 0.8,
+        "wingSpan": 0.8,
+        "w": 1
+      },
+
+      "states": [
+        {
+          "name": "transient",
+          "tr": 0.05,
+          "description": "select group",
+
+          "aeroState": {
+            "cruiseSpeed": 10,
+            "w": 1
+          },
+          "actions": [
+            {
+              "name": "select_group",
+              "selection": "biggest"
+            },
+            {
+              "name": "position_to_attack",
+              "rel_pos": [ -20, 5, 10 ]
+            }
+          ]
+        },
+        {
+          "name": "persistent",
+          "tr": 0.05,
+          "duration": 5,
+          "description": "shadowing",
+          "aeroState": {
+            "cruiseSpeed": 10,
+            "w": 1
+          },
+          "actions": [
+            {
+              "name": "shadowing",
+              "prey_speed_scale": 1.2,
+              "w": 10,
+              "bearing": 240,
+              "distance": 20,
+              "placement": 0
+            }
+          ]
+        },
+        {
+          "name": "transient",
+          "tr": 0.05,
+          "description": "set - retreat",
+
+          "aeroState": {
+            "cruiseSpeed": 10,
+            "w": 1
+          },
+          "actions": [
+            {
+              "name": "set_retreat",
+              "distAway": 400,
+              "speed": 10
+            }
+          ]
+        },
+        {
+          "name": "persistent",
+          "tr": 0.05,
+          "duration": 20,
+          "description": "hold pattern",
+
+          "aeroState": {
+            "cruiseSpeed": 10,
+            "w": 5
+          },
+          "actions": [
+            {
+              "name": "hold_current",
+              "w": [ 0, 1, 5 ],
+              "altitude_dev": 10.0
+            }
+          ]
+        }
+      ],
+        "transitions": {
+            "name": "piecewise_linear_interpolator",
+            "TM": [
+              [
+                [ 0, 1, 0, 0 ],
+                [ 0, 0, 1, 0 ],
+                [ 0, 0, 0, 1 ],
+                [ 1, 0, 0, 0 ]
+              ]
+            ],
+            "edges": [ 0 ]
+        }
+    }
+}

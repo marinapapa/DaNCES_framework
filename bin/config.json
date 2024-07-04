@@ -1,0 +1,52 @@
+{
+  "Simulation": {
+    "name": "composed_config.json",
+    "species_config": {
+      "prey": "species/prey.json",
+      "predator": "species/predator.json"
+    },
+    "dt": 0.001,
+    "Tmax": 90,
+    "groupDetection": {
+      "threshold": 10,
+      "interval": 45
+    },
+    "numThreads": -1,
+
+    "Analysis": {
+      "data_folder": "test",
+      "Observers": [
+        {
+          "type": "TimeSeries",
+          "output_name": "timeseries",
+          "header": "time,id,posx,posy,posz,dirx,diry,dirz,speed,accelx,accely,accelz,state,substate,dist2fcent,dirX2fcent,dirY2fcent,dirZ2fcent,nnd2",
+          "skip_csv": false,
+          "cached_rows": 10000,
+          "sample_freq": 0.1
+        },
+        {
+          "type": "~GroupData",
+          "output_name": "groups",
+          "header": "time,group_id,size,velx,vely,velz,pol,oobbVol,obbExtX,obbExtY,obbExtZ,H0X,H0Y,H0Z,H1X,H1Y,H1Z,H2X,H2Y,H2Z",
+          "skip_csv": false,
+          "cached_rows": 10000,
+          "sample_freq": 0.1
+        },
+        {
+          "type": "Diffusion",
+          "output_name": "Diffusion",
+          "header": "T0,Qm[30],R[30]",
+          "skip_csv": false,
+          "cached_rows": 10000,
+          "sample_freq": 0.1,
+          "max_topo": 6
+        }
+      ],
+      "Externals": {
+        "plot?": 0,
+        "Rscript": "plot_turns.R",
+        "configName": ""
+      }
+    }
+  }
+}

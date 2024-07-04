@@ -1,0 +1,236 @@
+{
+  "Prey": {
+    "N": 50,
+    "shape": "arrow.ac",
+    "scale": 1,
+    "InitCondit": {
+      "type": "flock",
+      "pos": [ 0, 0, 0 ],
+      "dir": [ 1, 0, 0 ],
+      "radius": 10,
+      "degdev": 0.001,
+      "file": ""
+    },
+    "aero": {
+      "betaIn": 120.0,
+      "cruiseSpeed": 9,
+      "maxSpeed": 20,
+      "minSpeed": 5,
+      "bodyMass": 0.08,
+      "wingSpan": 0.4,
+      "w": 10
+    },
+    "stress": {
+      "decay": 1,
+      "sources": [
+        {
+          "name": "predator_distance",
+          "w": 0.5,
+          "distr_shape": 5
+        }
+      ]
+    },
+    "states": [
+      {
+        "name": "transient",
+        "description": "normal flocking",
+        "tr": 0.05,
+
+        "aeroState": {
+          "cruiseSpeed": 9.0,
+          "w": 1.0
+        },
+
+        "actions": [
+          {
+            "name": "align_n",
+            "topo": 7,
+            "fov": 300,
+            "maxdist": 200,
+            "w": 1
+          },
+          {
+            "name": "cohere_centroid_distance",
+            "topo": 4,
+            "fov": 300,
+            "maxdist": 200,
+            "min_w_dist": 0,
+            "max_w_dist": 5.0,
+            "note": "min/max coh the smootherstep parameters",
+            "w": 1
+          },
+          {
+            "name": "avoid_n_position",
+            "topo": 1,
+            "fov": 300,
+            "minsep": 1,
+            "maxdist": 200,
+            "w": 1
+          },
+          {
+            "name": "altitude_attraction",
+            "pref_altitude": 0,
+            "attr_smoothstep": [ 10, 20 ],
+            "smooth_range": 40,
+            "max_pitch": 20,
+            "w": 0.1
+          },
+          {
+            "name": "copy_escape",
+            "topo": 4,
+            "fov": 300,
+            "maxdist": 200
+          },
+          {
+            "name": "wiggle",
+            "w": 0.1
+          }
+        ]
+      },
+      {
+        "name": "multi_state",
+        "description": "escape",
+        "copyable": true,
+        "selector": {
+          "probs": [ 0.9, 0.1 ],
+          "override_from_actions": false
+        },
+        "sub_states": [
+          {
+            "name": "persistent",
+            "description": "turn",
+            "copyable": true,
+            "tr": 0.05,
+            "duration": 5,
+
+            "aeroState": {
+              "cruiseSpeed": 9,
+              "w": 0.5
+            },
+
+            "actions": [
+              {
+                "name": "random_t_turn_gamma_pred",
+                "turn_mean": 180,
+                "turn_sd": 5,
+                "time_mean": 2,
+                "time_sd": 0.1,
+                "select_prob": 0.5
+              },
+              {
+                "name": "wiggle",
+                "w": 0.1
+              }
+            ]
+          },
+          {
+            "name": "persistent",
+            "description": "dive",
+            "copyable": true,
+            "tr": 0.05,
+            "duration": 3,
+
+            "aeroState": {
+              "cruiseSpeed": 9,
+              "w": 0.5
+            },
+
+            "actions": [
+              {
+                "name": "dive",
+                "minsep": 20,
+                "w": 0.5,
+                "max_dive": 4,
+                "select_prob": 0.5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "persistent",
+        "description": "flocking after attack",
+        "tr": 0.05,
+        "duration": 2,
+
+        "aeroState": {
+          "cruiseSpeed": 9.0,
+          "w": 1.0
+        },
+
+        "actions": [
+          {
+            "name": "align_n",
+            "topo": 4,
+            "fov": 300,
+            "maxdist": 200,
+            "w": 1
+          },
+          {
+            "name": "cohere_centroid_distance",
+            "topo": 4,
+            "fov": 300,
+            "maxdist": 200,
+            "min_w_dist": 0,
+            "max_w_dist": 5.0,
+            "note": "min/max coh the smootherstep parameters",
+            "w": 1
+          },
+          {
+            "name": "avoid_n_position",
+            "topo": 1,
+            "fov": 300,
+            "minsep": 1,
+            "maxdist": 200,
+            "w": 1
+          },
+          {
+            "name": "roost_attraction",
+            "roost_radius": 100,
+            "roost_pos_xz": [ 50, 100 ],
+            "warning": "roost shouldn't be directly behind initial heading",
+            "w": 0.25
+          },
+          {
+            "name": "altitude_attraction",
+            "pref_altitude": 0,
+            "attr_smoothstep": [ 10, 20 ],
+            "smooth_range": 40,
+            "max_pitch": 45,
+            "w": 0.1
+          },
+          {
+            "name": "level_attraction",
+            "max_pitch": 10,
+            "w": 0.1
+          },
+          {
+            "name": "wiggle",
+            "w": 0.1
+          }
+        ]
+      }
+    ],
+    "transitions": {
+      "name": "piecewise_linear_interpolator",
+      "TM": [
+        [
+          [ 1, 0, 0 ],
+          [ 0, 0, 1 ],
+          [ 1, 0, 0 ]
+        ],
+        [
+          [ 0.999, 0.001, 0 ],
+          [ 0, 0, 1 ],
+          [ 1, 0, 0 ]
+        ],
+        [
+          [ 0.9, 0.1, 0 ],
+          [ 0, 0, 1 ],
+          [ 1, 0, 0 ]
+        ]
+      ],
+      "edges": [ 0, 0.8, 1 ]
+    }
+  }
+}
