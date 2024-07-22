@@ -95,7 +95,7 @@ Default predator-agents actions:
     *  __chase_closest_prey__: the predator turns towards the closest prey-agent at every time point (target) and moves with a speed that scales from this agent's speed. Parameters: _prey_speed_scale_, _w_. 
     *  __lock_on_closest_prey__: the predator turns towards its target prey-agents, selected at the beginning of the attack (state-switch) as the closest prey. The predator moves with a speed that scales from this target's speed. Parameters: _prey_speed_scale_, _w_. 
     
-_Note_: More actions are included in the code (__actions__ folder) but are not active in the present state of the model. 
+_Note_: More actions are included in the code (__actions__ folder) but are not active in the present state of the model. A description of each is given in the _Table1_ISCUnits.pdf_.
 
 ## _Individual States_
 
