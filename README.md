@@ -4,7 +4,7 @@ This is an agent-based model composed on the DaNCES framework, for DAta-iNspired
 
 Information about the model are given below, and details about the framework are presented in:
 
-_Papadopoulou M., Hildenbrandt H., Hemelrijk C.K. (Submitted) DaNCES: a framework for data-inspired agent-based models of collective escape._
+_Papadopoulou M., Hildenbrandt H., Hemelrijk C.K. (2024) DaNCES: a framework for data-inspired agent-based models of collective escape. Accepted._
 
 ## Prerequisites
 
