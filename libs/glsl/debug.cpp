@@ -2,6 +2,7 @@
 #include <set>
 #include <cstdio>
 #include <mutex>
+#include <string>
 
 
 namespace glsl

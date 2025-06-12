@@ -122,7 +122,7 @@ protected: \
     if constexpr (I < action_pack::size - 1) chain_assess_entry<I + 1>(self, idx, T, sim); \
   } \
 private: \
-  bool is_copyable() const noexcept { return copyable_; } \
+  bool is_copyable() const noexcept override { return copyable_; } \
   std::string descr_; \
   bool copyable_ = false; \
 

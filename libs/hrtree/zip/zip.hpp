@@ -116,12 +116,12 @@ namespace hrtree {
       pointer operator -> () const { return indexed::template ptr<zip>(self_); }
       reference operator [] (size_t i) const { return *(*this + i); }
 
-      zip& operator ++ () { indexed::template preincr(self_); return *this; }
-      zip& operator -- () { indexed::template predecr(self_); return *this; }
+      zip& operator ++ () { indexed::preincr(self_); return *this; }
+      zip& operator -- () { indexed::predecr(self_); return *this; }
       zip operator ++ (int) { zip tmp(*this); return ++tmp; }
       zip operator -- (int) { zip tmp(*this); return ++tmp; }
-      zip& operator += (ptrdiff_t n) { indexed::template advance(self_, +n); return *this; }
-      zip& operator -= (ptrdiff_t n) { indexed:: template advance(self_, -n); return *this; }
+      zip& operator += (ptrdiff_t n) { indexed::advance(self_, +n); return *this; }
+      zip& operator -= (ptrdiff_t n) { indexed::advance(self_, -n); return *this; }
 
       bool operator == (const zip& x) const { return self_ == x.self_; }
       bool operator != (const zip& x) const { return self_ != x.self_; }
@@ -187,7 +187,7 @@ namespace hrtree {
         template <typename ZIT>
         static void apply(ZIT& src, ZIT& dst, ptrdiff_t srcIdx, ptrdiff_t dstIdx)
         {
-          iter_move0<I-1>::template apply(src, dst, srcIdx, dstIdx);
+          iter_move0<I-1>::apply(src, dst, srcIdx, dstIdx);
           *(dst.template get<I>() + dstIdx) = std::move(*(src.template get<I>() + srcIdx));
         }
       };
@@ -206,7 +206,7 @@ namespace hrtree {
     template <typename Head, typename... Tail>
     inline void iter_move(zip<Head, Tail...> & src, zip<Head, Tail...> & dst, ptrdiff_t srcIdx, ptrdiff_t dstIdx)
     {
-      detail::iter_move0<sizeof...(Tail)>::template apply(src, dst, srcIdx, dstIdx);
+      detail::iter_move0<sizeof...(Tail)>::apply(src, dst, srcIdx, dstIdx);
     }
 
 
