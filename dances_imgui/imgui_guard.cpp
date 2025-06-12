@@ -51,7 +51,7 @@ imgui_guard::imgui_guard() {
       // Create window with graphics context
       glm::ivec4 wr = {};
       for (size_t i = 0; i < 4; ++i) {
-        wr[i] = J["gui"]["win_rect"][i];
+        wr[i] = std::max(J["gui"]["win_rect"][i].get<int>(), 256);
       }
       window_ = glfwCreateWindow(wr[2], wr[3], "DaNCES Prey demo", NULL, NULL);
       if (window_ == nullptr) {
