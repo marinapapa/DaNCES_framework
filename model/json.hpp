@@ -50,7 +50,7 @@ json uncomment_json(const std::string& jstr);
 
 
 
-json compose_json(const std::filesystem::path& project_dir);
+json compose_json(const std::filesystem::path& project_dir, const std::filesystem::path& composed = "");
 
 
 void save_json(const json& J, const std::filesystem::path& json_file);

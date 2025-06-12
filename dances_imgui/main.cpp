@@ -78,7 +78,15 @@ int main(int argc, const char* argv[])
     if (!std::filesystem::is_directory(project_dir)) {
       throw std::runtime_error("can't open project directory");
     }
-    auto J = compose_json(project_dir);
+
+    // to not compose config but take pre-composed from command line
+    std::filesystem::path arg_config = "";
+
+    if ( clp.optional("config", arg_config )) {
+        arg_config = std::filesystem::absolute(arg_config);
+    } 
+
+    auto J = compose_json(project_dir, arg_config);
     run(J);
     return 0;
   }

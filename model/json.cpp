@@ -46,19 +46,26 @@ json uncomment_json(const std::string& jstr)
 }
 
 
-json compose_json(const std::filesystem::path& project_dir)
+json compose_json(const std::filesystem::path& project_dir, const std::filesystem::path& composed_config)
 {
-  auto ic = std::ifstream(project_dir / "config.json");
-  auto jc = json{};
-  ic >> jc;
-  std::vector<std::filesystem::path> paths = {
-    project_dir / "config.json",
-    std::filesystem::path(std::string(jc["Simulation"]["species_config"]["prey"])),
-    std::filesystem::path(std::string(jc["Simulation"]["species_config"]["predator"]))
-  };
-  if (std::filesystem::exists(exe_path::get() / "imgui.json")) {
-    paths.emplace_back(exe_path::get() / "imgui.json");
-  }
+    std::vector<std::filesystem::path> paths;
+
+    if (composed_config == "") {
+      auto ic = std::ifstream(project_dir / "config.json");
+      auto jc = json{};
+      ic >> jc;
+      paths.assign(1, project_dir / "config.json");
+      paths.emplace_back(std::filesystem::path(std::string(jc["Simulation"]["species_config"]["prey"])));
+      paths.emplace_back(std::filesystem::path(std::string(jc["Simulation"]["species_config"]["predator"])));
+        
+      if (std::filesystem::exists(exe_path::get() / "imgui.json")) {
+        paths.emplace_back(exe_path::get() / "imgui.json");
+      }
+    }
+    else {
+        paths.assign(1, composed_config);
+    }
+
   std::string str("{");
   for (size_t i = 0; i < paths.size(); ++i) {
     std::ifstream is(paths[i]);
@@ -77,7 +84,6 @@ json compose_json(const std::filesystem::path& project_dir)
   ss >> j;
   return j;
 }
-
 
 void save_json(const json& J, const std::filesystem::path& json_file)
 {

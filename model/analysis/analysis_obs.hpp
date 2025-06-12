@@ -26,13 +26,16 @@ namespace analysis
 				const auto fl_id = sim.group_of<Tag>(idx);
 				const auto& thisgroup = sim.groups<Tag>()[fl_id];
 				const auto dist2cent = glm::distance(p.pos, thisgroup.gc()); // distance to center of group
+				//const auto dist2pred = p.dis	;
 				const auto dir2fcent = glm::normalize(math::ofs(p.pos, thisgroup.gc()));
 				auto si = p.get_current_state();
 
 				const auto& all_nb = sim.sorted_view<Tag>(idx); // all neighbors
 				float nnd2 = 0; 
+				
 				if (all_nb.size()) {
 					nnd2 = all_nb.cbegin()->dist2;
+					float nnid = all_nb.cbegin()->idx;
 			  }
 
 
@@ -50,6 +53,8 @@ namespace analysis
 				*(++pf) = dist2cent;
 				*(++pf) = dir2fcent.x; *(++pf) = dir2fcent.y; *(++pf) = dir2fcent.z;
 				*(++pf) = nnd2;
+				*(++pf) = fl_id;
+
 			});
 		}
 
@@ -86,22 +91,28 @@ namespace analysis
 				auto fdir = math::save_normalize(i.vel, vec3(0.f));
 				auto fm = sim.group_mates<Tag>(idx);
 				const auto& pop = sim.pop<Tag>();
-				for (const auto& idx : fm) {
-					pol += glm::dot(pop[idx].dir, fdir);
+				for (const auto& midx : fm) {
+					pol += glm::dot(pop[midx].dir, fdir);
 			  };
-				pol /= fm.size();
+				pol /= static_cast<float>(i.size);
+				//pol /= fm.size();
 
 				*pf = tt;
 				*(++pf) = static_cast<float>(idx);
 				*(++pf) = static_cast<float>(i.size);
-				*(++pf) = i.vel.x; *(++pf) = i.vel.y; *(++pf) = i.vel.z;
+				*(++pf) = i.vel.x; 
+				*(++pf) = i.vel.y; 
+				*(++pf) = i.vel.z;
 				*(++pf) = pol;
 				*(++pf) = i.ext.x * i.ext.y * i.ext.z;		// volume
-				*(++pf) = i.ext.x; *(++pf) = i.ext.y; *(++pf) = i.ext.z;
+				*(++pf) = i.ext.x; 
+				*(++pf) = i.ext.y; 
+				*(++pf) = i.ext.z;
 				*(++pf) = i.H[0].x; *(++pf) = i.H[0].y; *(++pf) = i.H[0].z;
 				*(++pf) = i.H[1].x; *(++pf) = i.H[1].y; *(++pf) = i.H[1].z;
 				*(++pf) = i.H[2].x; *(++pf) = i.H[2].y; *(++pf) = i.H[2].z;
 				++idx;
+				++pf;
 			}
 		}
 

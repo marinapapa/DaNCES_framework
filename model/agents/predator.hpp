@@ -79,7 +79,7 @@ namespace model {
       >>,
       states::persistent<actions::package<
         Pred,
-        actions::shadowing<Pred>
+        actions::chase_closest_prey<Pred>
       >>,
       states::transient<actions::package<
         Pred,

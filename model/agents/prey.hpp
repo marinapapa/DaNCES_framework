@@ -93,8 +93,8 @@ namespace model {
         actions::wiggle<Prey>
       >>,
       states::persistent<actions::package<
-        Prey, // dive
-        actions::dive<Prey>
+        Prey, // scatter
+        actions::scatter<Prey>
       >>
     >;
 
@@ -103,7 +103,7 @@ namespace model {
       states::transient<actions::package<
         Prey, // 1. regular flocking
         actions::align_n<Prey>,
-		    actions::cohere_centroid_distance<Prey>,
+		actions::cohere_centroid_distance<Prey>,
         actions::avoid_n_position<Prey>,
         actions::altitude_attraction<Prey>,
         actions::copy_escape<Prey>, // with copy escape

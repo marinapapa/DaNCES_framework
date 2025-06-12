@@ -12,6 +12,8 @@ namespace model {
 		namespace actions {
 
 				// PREDATOR - PREY INTERACTIONS 
+
+			    // dive away from a predator (3D maneuver)
 				template <typename Agent>
 				class dive
 				{ // avoid predators position
@@ -330,7 +332,7 @@ namespace model {
 						float maxdist2 = 0;     // [m^2]
 				};
 
-				//turn in time as reaction to a predator
+				//perform a zig zag maneuver as reaction to a predator
 				template <typename Agent>
 				class zig_zag
 				{
@@ -411,59 +413,59 @@ namespace model {
 						float min_sep2_ = 0; // distance to start zig zag, so that closest individual starts
 				};
 
+				// turn away from closeby neighbour
+				template <typename Agent>
+				class scatter
+				{ // avoid perpendicular to predators offset
 
-		template <typename Agent>
-		class scatter
-		{ // avoid perpendicular to predators offset
+					make_action_from_this(scatter);
 
-			make_action_from_this(scatter);
+				public:
+					scatter() {}
+					scatter(size_t, const json& J)
+					{
+						float tdist = J["threshold_dist"];
+						tdist2_ = tdist * tdist;
+						float w_temp = J["w"];   
+						w_ = glm::vec3(w_temp);
+					}
 
-		public:
-			scatter() {}
-			scatter(size_t, const json& J)
-			{
-				float tdist = J["threshold_dist"];
-				tdist2_ = tdist * tdist;
-				w_ = J["w"];                 
-			}
-
-			float assess_entry(agent_type* self, size_t idx, tick_t T, const Simulation& sim)
-			{	// returning a probability for whether choose this in a substate context
+					float assess_entry(agent_type* self, size_t idx, tick_t T, const Simulation& sim)
+					{	// returning a probability for whether choose this in a substate context
 				
-				// if predator too close, very high value
-				const auto nv = sim.sorted_view<Tag, pred_tag>(idx);
-				if (nv.size()) {
-					const auto& predator = sim.pop<pred_tag>()[nv[0].idx];
-					const auto sd = self->H.local_pos(predator.pos);		// a.k.a. signed distance
-					if (glm::length2(sd) < tdist2_) {
-						return 10.f; // very high value
+						// if predator too close, very high value
+						const auto nv = sim.sorted_view<Tag, pred_tag>(idx);
+						if (nv.size()) {
+							const auto& predator = sim.pop<pred_tag>()[nv[0].idx];
+							const auto sd = self->H.local_pos(predator.pos);		// a.k.a. signed distance
+							if (glm::length2(sd) < tdist2_) {
+								return 10.f; // very high value
+							}
+						}
+						return 0.f;
 					}
-				}
-				return 0.f;
-			}
 
-			void on_entry(agent_type* self, size_t idx, tick_t T, const Simulation& sim)
-			{
-			}
-
-			void operator()(agent_type* self, size_t idx, tick_t T, const Simulation& sim)
-			{
-				const auto nv = sim.sorted_view<Tag, pred_tag>(idx);
-				if (nv.size()) {
-					if (nv[0].dist2 < tdist2_) {
-						const auto& predator = sim.pop<pred_tag>()[nv[0].idx];
-						const auto sd = self->H.local_pos(predator.pos);		// a.k.a. signed distance
-						const auto Fl = w_ * glm::sign(sd);
-						self->steering -= self->H.global_vec(Fl);
+					void on_entry(agent_type* self, size_t idx, tick_t T, const Simulation& sim)
+					{
 					}
-				}
-			}
 
-		private:
-			glm::vec3 w_ = {};			// [1]
-			float tdist2_ = 0;		  // [m^2]
-		};
+					void operator()(agent_type* self, size_t idx, tick_t T, const Simulation& sim)
+					{
+						const auto nv = sim.sorted_view<Tag, pred_tag>(idx);
+						if (nv.size()) {
+							if (nv[0].dist2 < tdist2_) {
+								const auto& predator = sim.pop<pred_tag>()[nv[0].idx];
+								const auto sd = self->H.local_pos(predator.pos);		// a.k.a. signed distance
+								const auto Fl = w_ * glm::sign(sd);
+								self->steering -= self->H.global_vec(Fl);
+							}
+						}
+					}
 
+				private:
+					glm::vec3 w_ = {};			// [1]
+					float tdist2_ = 0;		  // [m^2]
+				};
 
 		}
 }
