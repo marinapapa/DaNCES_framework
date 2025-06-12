@@ -1,0 +1,588 @@
+{
+    "Pred": {
+        "InitCondit": {
+            "radius": 100,
+            "type": "random"
+        },
+        "N": 2,
+        "aero": {
+            "betaIn": 90.0,
+            "bodyMass": 0.8,
+            "cruiseSpeed": 18,
+            "maxSpeed": 30,
+            "minSpeed": 10,
+            "w": 1,
+            "wingSpan": 0.8
+        },
+        "scale": 1.5,
+        "shape": "arrow.ac",
+        "states": [
+            {
+                "actions": [
+                    {
+                        "name": "select_group",
+                        "selection": "biggest"
+                    },
+                    {
+                        "name": "position_to_attack",
+                        "rel_pos": [
+                            -20,
+                            5,
+                            10
+                        ]
+                    }
+                ],
+                "aeroState": {
+                    "cruiseSpeed": 10,
+                    "w": 1
+                },
+                "description": "select group",
+                "name": "transient",
+                "tr": 0.05
+            },
+            {
+                "actions": [
+                    {
+                        "name": "chase_closest_prey",
+                        "prey_speed_scale": 1.2,
+                        "w": 10
+                    }
+                ],
+                "aeroState": {
+                    "cruiseSpeed": 10,
+                    "w": 1
+                },
+                "description": "chasing",
+                "duration": 10,
+                "name": "persistent",
+                "tr": 0.05
+            },
+            {
+                "actions": [
+                    {
+                        "distAway": 400,
+                        "name": "set_retreat",
+                        "speed": 10
+                    }
+                ],
+                "aeroState": {
+                    "cruiseSpeed": 10,
+                    "w": 1
+                },
+                "description": "set - retreat",
+                "name": "transient",
+                "tr": 0.05
+            },
+            {
+                "actions": [
+                    {
+                        "altitude_dev": 10.0,
+                        "name": "hold_current",
+                        "w": [
+                            0,
+                            1,
+                            5
+                        ]
+                    }
+                ],
+                "aeroState": {
+                    "cruiseSpeed": 10,
+                    "w": 5
+                },
+                "description": "hold pattern",
+                "duration": 10,
+                "name": "persistent",
+                "tr": 0.05
+            }
+        ],
+        "transitions": {
+            "TM": [
+                [
+                    [
+                        0,
+                        1,
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0,
+                        1,
+                        0
+                    ],
+                    [
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    [
+                        1,
+                        0,
+                        0,
+                        0
+                    ]
+                ]
+            ],
+            "edges": [
+                0
+            ],
+            "name": "piecewise_linear_interpolator"
+        }
+    },
+    "Prey": {
+        "InitCondit": {
+            "degdev": 0.001,
+            "dir": [
+                1,
+                0,
+                0
+            ],
+            "file": "",
+            "pos": [
+                0,
+                0,
+                0
+            ],
+            "radius": 5,
+            "type": "flock"
+        },
+        "N": 50,
+        "aero": {
+            "betaIn": 120.0,
+            "bodyMass": 0.08,
+            "cruiseSpeed": 9,
+            "maxSpeed": 20,
+            "minSpeed": 5,
+            "w": 2,
+            "wingSpan": 0.4
+        },
+        "scale": 1,
+        "shape": "arrow.ac",
+        "states": [
+            {
+                "actions": [
+                    {
+                        "fov": 300,
+                        "maxdist": 200,
+                        "name": "align_n",
+                        "topo": 7,
+                        "w": 1
+                    },
+                    {
+                        "fov": 300,
+                        "max_w_dist": 5.0,
+                        "maxdist": 200,
+                        "min_w_dist": 0,
+                        "name": "cohere_centroid_distance",
+                        "note": "min/max coh the smootherstep parameters",
+                        "topo": 7,
+                        "w": 1
+                    },
+                    {
+                        "fov": 300,
+                        "maxdist": 200,
+                        "minsep": 1,
+                        "name": "avoid_n_position",
+                        "topo": 1,
+                        "w": 1
+                    },
+                    {
+                        "attr_smoothstep": [
+                            10,
+                            20
+                        ],
+                        "max_pitch": 20,
+                        "name": "altitude_attraction",
+                        "pref_altitude": 0,
+                        "smooth_range": 40,
+                        "w": 0.1
+                    },
+                    {
+                        "fov": 300,
+                        "maxdist": 200,
+                        "name": "copy_escape",
+                        "topo": 7
+                    },
+                    {
+                        "name": "wiggle",
+                        "w": 0.1
+                    }
+                ],
+                "aeroState": {
+                    "cruiseSpeed": 9.0,
+                    "w": 1.0
+                },
+                "description": "normal flocking",
+                "name": "transient",
+                "tr": 0.05
+            },
+            {
+                "copyable": true,
+                "description": "escape",
+                "name": "multi_state",
+                "selector": {
+                    "override_from_actions": true,
+                    "probs": [
+                        0.9,
+                        0.1
+                    ]
+                },
+                "sub_states": [
+                    {
+                        "actions": [
+                            {
+                                "name": "random_t_turn_gamma_pred",
+                                "select_prob": 0.9,
+                                "time_mean": 2,
+                                "time_sd": 0.2,
+                                "turn_mean": 90,
+                                "turn_sd": 10
+                            },
+                            {
+                                "name": "wiggle",
+                                "w": 0.1
+                            }
+                        ],
+                        "aeroState": {
+                            "cruiseSpeed": 9,
+                            "w": 0.5
+                        },
+                        "copyable": true,
+                        "description": "turn",
+                        "duration": 3,
+                        "name": "persistent",
+                        "tr": 0.05
+                    },
+                    {
+                        "actions": [
+                            {
+                                "name": "scatter",
+                                "select_prob": 0.1,
+                                "threshold_dist": 2,
+                                "w": 0.5
+                            }
+                        ],
+                        "aeroState": {
+                            "cruiseSpeed": 9,
+                            "w": 0.5
+                        },
+                        "copyable": true,
+                        "description": "scatter",
+                        "duration": 2,
+                        "name": "persistent",
+                        "tr": 0.05
+                    }
+                ]
+            },
+            {
+                "actions": [
+                    {
+                        "fov": 300,
+                        "maxdist": 200,
+                        "name": "align_n",
+                        "topo": 7,
+                        "w": 1
+                    },
+                    {
+                        "fov": 300,
+                        "max_w_dist": 5.0,
+                        "maxdist": 200,
+                        "min_w_dist": 0,
+                        "name": "cohere_centroid_distance",
+                        "note": "min/max coh the smootherstep parameters",
+                        "topo": 7,
+                        "w": 1
+                    },
+                    {
+                        "fov": 300,
+                        "maxdist": 200,
+                        "minsep": 1,
+                        "name": "avoid_n_position",
+                        "topo": 1,
+                        "w": 1
+                    },
+                    {
+                        "name": "roost_attraction",
+                        "roost_pos_xz": [
+                            50,
+                            100
+                        ],
+                        "roost_radius": 100,
+                        "w": 0.25,
+                        "warning": "roost shouldn't be directly behind initial heading"
+                    },
+                    {
+                        "attr_smoothstep": [
+                            10,
+                            20
+                        ],
+                        "max_pitch": 45,
+                        "name": "altitude_attraction",
+                        "pref_altitude": 0,
+                        "smooth_range": 40,
+                        "w": 0.1
+                    },
+                    {
+                        "max_pitch": 10,
+                        "name": "level_attraction",
+                        "w": 0.1
+                    },
+                    {
+                        "name": "wiggle",
+                        "w": 0.1
+                    }
+                ],
+                "aeroState": {
+                    "cruiseSpeed": 9.0,
+                    "w": 1.0
+                },
+                "description": "flocking after attack",
+                "duration": 2,
+                "name": "persistent",
+                "tr": 0.05
+            }
+        ],
+        "stress": {
+            "decay": 1,
+            "sources": [
+                {
+                    "distr_shape": 5,
+                    "name": "predator_distance",
+                    "w": 0.5
+                }
+            ]
+        },
+        "transitions": {
+            "TM": [
+                [
+                    [
+                        1,
+                        0,
+                        0
+                    ],
+                    [
+                        0,
+                        0,
+                        1
+                    ],
+                    [
+                        1,
+                        0,
+                        0
+                    ]
+                ],
+                [
+                    [
+                        0.999,
+                        0.001,
+                        0
+                    ],
+                    [
+                        0,
+                        0,
+                        1
+                    ],
+                    [
+                        1,
+                        0,
+                        0
+                    ]
+                ],
+                [
+                    [
+                        0.9,
+                        0.1,
+                        0
+                    ],
+                    [
+                        0,
+                        0,
+                        1
+                    ],
+                    [
+                        1,
+                        0,
+                        0
+                    ]
+                ]
+            ],
+            "edges": [
+                0,
+                0.8,
+                1
+            ],
+            "name": "piecewise_linear_interpolator"
+        }
+    },
+    "Simulation": {
+        "Analysis": {
+            "Externals": {
+                "Rscript": "plot_turns.R",
+                "configName": "",
+                "plot?": 0
+            },
+            "Observers": [
+                {
+                    "cached_rows": 10000,
+                    "header": "time,id,posx,posy,posz,dirx,diry,dirz,speed,accelx,accely,accelz,state,substate,dist2fcent,dirX2fcent,dirY2fcent,dirZ2fcent,nnd2,flock_id",
+                    "output_name": "timeseries",
+                    "sample_freq": 0.1,
+                    "skip_csv": false,
+                    "type": "TimeSeries"
+                },
+                {
+                    "cached_rows": 10000,
+                    "header": "time,group_id,size,velx,vely,velz,pol,oobbVol,obbExtX,obbExtY,obbExtZ,H0X,H0Y,H0Z,H1X,H1Y,H1Z,H2X,H2Y,H2Z",
+                    "output_name": "groups",
+                    "sample_freq": 0.1,
+                    "skip_csv": false,
+                    "type": "GroupData"
+                },
+                {
+                    "cached_rows": 10000,
+                    "header": "T0,Qm[30],R[30]",
+                    "max_topo": 6,
+                    "output_name": "Diffusion",
+                    "sample_freq": 0.1,
+                    "skip_csv": false,
+                    "type": "~Diffusion"
+                }
+            ],
+            "data_folder": "test",
+            "output_path": "C:\\Users\\mpapa\\Documents\\Code\\DaNCES_framework\\bin\\sim_data\\test\\202568133381749382388420"
+        },
+        "Tmax": 60,
+        "dt": 0.001,
+        "groupDetection": {
+            "interval": 45,
+            "threshold": 10
+        },
+        "name": "composed_config.json",
+        "numThreads": -1,
+        "species_config": {
+            "predator": "species/predator.json",
+            "prey": "species/prey.json"
+        }
+    },
+    "gui": {
+        "Trails": {
+            "ambient": 0.5,
+            "fade": [
+                0.0,
+                0.1
+            ],
+            "interval": 0.02,
+            "length": 10,
+            "tickInterval": 1.0,
+            "tickWidth": 0.1,
+            "width": 0.1
+        },
+        "fonts": {
+            "content_scale": 1.0,
+            "descr": [
+                {
+                    "moniker": "main font",
+                    "pt": 11,
+                    "ttf": "LiberationMono-Regular.ttf"
+                }
+            ]
+        },
+        "fps": {
+            "gui": 50,
+            "paused": false,
+            "realtime": true,
+            "speedup": 1.0,
+            "throttle": true
+        },
+        "handler": [
+            {
+                "type": "Tracking"
+            },
+            {
+                "predator": 0,
+                "preys": 4,
+                "type": "~ColorMapping"
+            },
+            {
+                "roost_pos_plane": [
+                    0,
+                    0
+                ],
+                "type": "~GuiObserver"
+            },
+            {
+                "type": "~ImGui Demo"
+            },
+            {
+                "type": "~ImPlot Demo"
+            },
+            {
+                "collect_interval": 0.1,
+                "sources": [
+                    {
+                        "enabled": false,
+                        "type": "Altitude"
+                    }
+                ],
+                "type": "~Histograms"
+            }
+        ],
+        "headless": false,
+        "opengl_debug_level": 0,
+        "opengl_msaa": false,
+        "pip": [
+            {
+                "cam_mode": "Local",
+                "enabled": true,
+                "fovy": 45.0,
+                "ribbon": [
+                    true,
+                    true
+                ],
+                "target_id": 0,
+                "target_species": 0,
+                "vp_prop": [
+                    0.0,
+                    0.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            {
+                "cam_mode": "Television",
+                "enabled": true,
+                "eye": [
+                    100,
+                    -40,
+                    0
+                ],
+                "fovy": 35.0,
+                "ribbon": [
+                    true,
+                    true
+                ],
+                "target_id": 0,
+                "target_species": 0,
+                "vp_prop": [
+                    0.0,
+                    0.0,
+                    0.35,
+                    0.35
+                ]
+            }
+        ],
+        "save_on_exit": true,
+        "skybox": {
+            "dimm": 1.0,
+            "textures": "sea"
+        },
+        "terrain": "snow_dirty_ground.png",
+        "win_rect": [
+            14,
+            59,
+            2852,
+            1451
+        ]
+    }
+}

@@ -1,6 +1,6 @@
 {
   "Prey": {
-    "N": 50,
+    "N": 20,
     "shape": "arrow.ac",
     "scale": 1,
     "InitCondit": {
@@ -18,7 +18,7 @@
       "minSpeed": 5,
       "bodyMass": 0.08,
       "wingSpan": 0.4,
-      "w": 10
+      "w": 1
     },
     "stress": {
       "decay": 1,
@@ -38,7 +38,7 @@
 
         "aeroState": {
           "cruiseSpeed": 9.0,
-          "w": 1.0
+          "w": 0.1
         },
 
         "actions": [
@@ -47,17 +47,17 @@
             "topo": 7,
             "fov": 300,
             "maxdist": 200,
-            "w": 1
+            "w": 0.5
           },
           {
             "name": "cohere_centroid_distance",
-            "topo": 4,
+            "topo": 7,
             "fov": 300,
             "maxdist": 200,
-            "min_w_dist": 0,
+            "min_w_dist": 0.5,
             "max_w_dist": 5.0,
             "note": "min/max coh the smootherstep parameters",
-            "w": 1
+            "w": 0.5
           },
           {
             "name": "avoid_n_position",
@@ -65,19 +65,19 @@
             "fov": 300,
             "minsep": 1,
             "maxdist": 200,
-            "w": 1
+            "w": 0.5
           },
           {
             "name": "altitude_attraction",
             "pref_altitude": 0,
             "attr_smoothstep": [ 10, 20 ],
-            "smooth_range": 40,
+            "smooth_range": 100,
             "max_pitch": 20,
             "w": 0.1
           },
           {
             "name": "copy_escape",
-            "topo": 4,
+            "topo": 7,
             "fov": 300,
             "maxdist": 200
           },
@@ -93,39 +93,12 @@
         "copyable": true,
         "selector": {
           "probs": [ 0.9, 0.1 ],
-          "override_from_actions": false
+          "override_from_actions": true
         },
         "sub_states": [
           {
             "name": "persistent",
             "description": "turn",
-            "copyable": true,
-            "tr": 0.05,
-            "duration": 5,
-
-            "aeroState": {
-              "cruiseSpeed": 9,
-              "w": 0.5
-            },
-
-            "actions": [
-              {
-                "name": "random_t_turn_gamma_pred",
-                "turn_mean": 180,
-                "turn_sd": 5,
-                "time_mean": 2,
-                "time_sd": 0.1,
-                "select_prob": 0.5
-              },
-              {
-                "name": "wiggle",
-                "w": 0.1
-              }
-            ]
-          },
-          {
-            "name": "persistent",
-            "description": "dive",
             "copyable": true,
             "tr": 0.05,
             "duration": 3,
@@ -137,14 +110,40 @@
 
             "actions": [
               {
-                "name": "dive",
-                "minsep": 20,
-                "w": 0.5,
-                "max_dive": 4,
-                "select_prob": 0.5
+                "name": "random_t_turn_gamma_pred",
+                "turn_mean": 90,
+                "turn_sd": 10,
+                "time_mean": 2,
+                "time_sd": 0.2,
+                "select_prob": 0.9
+              },
+              {
+                "name": "wiggle",
+                "w": 0.1
               }
             ]
-          }
+          },
+          {
+            "name": "persistent",
+            "description": "scatter",
+            "copyable": true,
+            "tr": 0.05,
+            "duration": 2,
+
+            "aeroState": {
+                "cruiseSpeed": 9,
+                "w": 0.5
+            },
+
+            "actions": [
+                {
+                    "name": "scatter",
+                    "threshold_dist": 2,
+                    "w": 0.5,
+                    "select_prob": 0.1
+                }
+            ]
+        }
         ]
       },
       {
@@ -161,14 +160,14 @@
         "actions": [
           {
             "name": "align_n",
-            "topo": 4,
+            "topo": 7,
             "fov": 300,
             "maxdist": 200,
             "w": 1
           },
           {
             "name": "cohere_centroid_distance",
-            "topo": 4,
+            "topo": 7,
             "fov": 300,
             "maxdist": 200,
             "min_w_dist": 0,
