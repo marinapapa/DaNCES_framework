@@ -16,7 +16,7 @@ _Papadopoulou M., Hildenbrandt H., Hemelrijk C.K. (2024) DaNCES: a framework for
 #### _X11_
 
 ```bash
-sudo aprt install build-essential
+sudo apt install build-essential
 sudo apt install git cmake ninia-build curl zip unzip tar
 sudo apt install libxinerama-dev libxcursor-dev xorg-dev libglu1-mesa-dev pkg-config
 ```
@@ -24,7 +24,7 @@ sudo apt install libxinerama-dev libxcursor-dev xorg-dev libglu1-mesa-dev pkg-co
 #### _wayland_
 
 ```bash
-sudo aprt install build-essential
+sudo apt install build-essential
 sudo apt install git cmake ninia-build curl zip unzip tar
 sudo apt install libwayland-dev libxkbcommon-dev wayland-protocols extra-cmake-modules
 ```
@@ -32,7 +32,7 @@ sudo apt install libwayland-dev libxkbcommon-dev wayland-protocols extra-cmake-m
 #### Build
 
 ```bash
-git clone hrrps://github.com/marinapapa/DaNCES_framework.git
+git clone https://github.com/marinapapa/DaNCES_framework.git
 cd DaNCES_framework
 git submodule update --init --remote --recursive
 cd vcpkg
