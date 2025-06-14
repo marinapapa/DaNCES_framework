@@ -54,7 +54,7 @@ cd bin
 
 ### Windows
 
-Pre-compiled binaries for Windows can be found in the 'Release' section of the github repository.
+Pre-compiled binaries for Windows could be found in the 'Release' section of the github repository.
 Building from source is recommended though:
 
 #### Prerequisites
