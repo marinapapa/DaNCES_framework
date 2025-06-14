@@ -128,11 +128,14 @@ imgui_guard::~imgui_guard() {
         os << J;
       }
     }
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
-    glfwDestroyWindow(window_);
-    glfwTerminate();
+    try {
+      ImGui_ImplOpenGL3_Shutdown();
+      ImGui_ImplGlfw_Shutdown();
+      ImGui::DestroyContext();
+      glfwDestroyWindow(window_);
+      glfwTerminate();
+    }
+    catch (...) {};
   }
 }
 
