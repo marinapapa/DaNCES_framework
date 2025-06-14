@@ -63,7 +63,7 @@ json compose_json(const std::filesystem::path& project_dir, const std::filesyste
       }
     }
     else {
-        paths.assign(1, composed_config);
+      paths.assign(1, composed_config);
     }
 
   std::string str("{");

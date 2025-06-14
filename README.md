@@ -6,13 +6,12 @@ Information about the model are given below, and details about the framework are
 
 _Papadopoulou M., Hildenbrandt H., Hemelrijk C.K. (2024) DaNCES: a framework for data-inspired agent-based models of collective escape. Accepted._
 
-## Prerequisites
 
-### Windows
+## Get started
 
-* cmake
+### Linux (assuming apt package manager like Debina, Ubuntu, Mint)
 
-### Linux (apt package manager like Debina, Ubuntu, Mint)
+#### Prerequisites
 
 ```bash
 sudo aprt install build-essential
@@ -20,17 +19,52 @@ sudo apt install git cmake ninia-build curl zip unzip tar
 sudo apt install libxinerama-dev libxcursor-dev xorg-dev libglu1-mesa-dev pkg-config
 ```
 
-## Build
+#### Build
 
 ```bash
-git clone git@github.com:marinapapa/DaNCES_framework.git
+git clone hrrps://github.com/marinapapa/DaNCES_framework.git
 cd DaNCES_framework
-git submodule --init --remote
-mkdir build
-cd build
+git submodule update --init --remote --recursive
+cd vcpkg
+./bootstrap-vcpkg.sh -disableMetrics
+cd ..
+mkdir build && cd build
 cmake ..
 cmake --build . --config Release
 ```
+
+Binaries are placed into the `DaNCES_framework/bin` folder.
+
+### Windows
+
+The `bin` folder contains pre-compiled binaries for Windows. The following
+steps are optional:
+
+#### Prerequisites
+
+Install `winget` from the Microsoft store.
+
+```powershell
+winget install cmake git
+winget install Microsoft.VisualStudio.2022.BuildTools
+```
+
+#### Build
+
+```powershell
+git clone hrrps://github.com/marinapapa/DaNCES_framework.git
+cd DaNCES_framework
+git submodule update --init --remote --recursive
+cd vcpkg
+./bootstrap-vcpkg.sh -disableMetrics
+cd ..
+mkdir build && cd build
+cmake ..
+cmake --build . --config Release
+```
+
+Binaries are placed into the `DaNCES_framework/bin` folder.
+
 
 ## 3rd party libraries
 
