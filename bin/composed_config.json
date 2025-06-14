@@ -147,7 +147,7 @@
             "radius": 5,
             "type": "flock"
         },
-        "N": 50,
+        "N": 1000,
         "aero": {
             "betaIn": 120.0,
             "bodyMass": 0.08,
@@ -429,7 +429,7 @@
                     "output_name": "timeseries",
                     "sample_freq": 0.1,
                     "skip_csv": false,
-                    "type": "TimeSeries"
+                    "type": "~TimeSeries"
                 },
                 {
                     "cached_rows": 10000,
@@ -437,7 +437,7 @@
                     "output_name": "groups",
                     "sample_freq": 0.1,
                     "skip_csv": false,
-                    "type": "GroupData"
+                    "type": "~GroupData"
                 },
                 {
                     "cached_rows": 10000,
@@ -510,12 +510,6 @@
                     0
                 ],
                 "type": "~GuiObserver"
-            },
-            {
-                "type": "~ImGui Demo"
-            },
-            {
-                "type": "~ImPlot Demo"
             },
             {
                 "collect_interval": 0.1,

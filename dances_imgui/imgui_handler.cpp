@@ -466,13 +466,15 @@ std::unique_ptr<imgui_handler> create_imgui_handler(AppWin* appwin, const json& 
 		enabled = false;
 		type.erase(type.begin());
 	}
-	if (type == "ImGui Demo") return std::unique_ptr<imgui_handler>(new handler::ImGuiDemo(jh, enabled));
-	else if (type == "ImPlot Demo") return std::unique_ptr<imgui_handler>(new handler::ImPlotDemo(jh, enabled));
-	else if (type == "Tracking") return std::unique_ptr<imgui_handler>(new handler::Tracking(appwin, jh, enabled));
+	if (type == "Tracking") return std::unique_ptr<imgui_handler>(new handler::Tracking(appwin, jh, enabled));
 	else if (type == "Groups") return std::unique_ptr<imgui_handler>(new handler::Groups(jh, enabled));
 	else if (type == "ColorMapping") return std::unique_ptr<imgui_handler>(new handler::ColorMapping(appwin, jh, enabled));
 	else if (type == "GuiObserver") return std::unique_ptr<imgui_handler>(new handler::GuiObserver<model::prey_tag>(jh, enabled));
 	else if (type == "Histograms") return std::unique_ptr<imgui_handler>(new handler::Histograms(jh, enabled));
+	else if (type == "ImGui Demo") return std::unique_ptr<imgui_handler>(new handler::ImGuiDemo(jh, enabled));
+	else if (type == "ImPlot Demo") return std::unique_ptr<imgui_handler>(new handler::ImPlotDemo(jh, enabled));
+	else if (type == "ImGui Demo") return std::unique_ptr<imgui_handler>(new handler::ImGuiDemo(jh, enabled));
+	else if (type == "ImPlot Demo") return std::unique_ptr<imgui_handler>(new handler::ImPlotDemo(jh, enabled));
 	else {
 		throw std::runtime_error("unknown imgui_handler");
 	}

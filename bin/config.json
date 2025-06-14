@@ -17,7 +17,7 @@
       "data_folder": "test",
       "Observers": [
         {
-          "type": "TimeSeries",
+          "type": "~TimeSeries",
           "output_name": "timeseries",
           "header": "time,id,posx,posy,posz,dirx,diry,dirz,speed,accelx,accely,accelz,state,substate,dist2fcent,dirX2fcent,dirY2fcent,dirZ2fcent,nnd2,flock_id",
           "skip_csv": false,
@@ -25,7 +25,7 @@
           "sample_freq": 0.2
         },
         {
-          "type": "GroupData",
+          "type": "~GroupData",
           "output_name": "groups",
           "header": "time,group_id,size,velx,vely,velz,pol,oobbVol,obbExtX,obbExtY,obbExtZ,H0X,H0Y,H0Z,H1X,H1Y,H1Z,H2X,H2Y,H2Z",
           "skip_csv": false,
