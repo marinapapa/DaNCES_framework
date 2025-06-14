@@ -54,8 +54,8 @@ cd bin
 
 ### Windows
 
-The `bin` folder contains pre-compiled binaries for Windows. The following
-steps are optional:
+Pre-compiled binaries for Windows could be found in the 'Release' section of the github repository.
+However, building from source is recommended...
 
 #### Prerequisites
 
@@ -64,6 +64,7 @@ Install `winget` from the Microsoft store.
 ```powershell
 winget install cmake git
 winget install Microsoft.VisualStudio.2022.BuildTools
+winget install Microsoft.VisualStudio.2022.Community --silent --override "--wait --quiet --add Microsoft.VisualStudio.Workload.NativeDesktop --includeRecommended"
 ```
 
 #### Build
