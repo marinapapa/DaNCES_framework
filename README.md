@@ -13,10 +13,20 @@ _Papadopoulou M., Hildenbrandt H., Hemelrijk C.K. (2024) DaNCES: a framework for
 
 #### Prerequisites
 
+#### _X11_
+
 ```bash
 sudo aprt install build-essential
 sudo apt install git cmake ninia-build curl zip unzip tar
 sudo apt install libxinerama-dev libxcursor-dev xorg-dev libglu1-mesa-dev pkg-config
+```
+
+#### _wayland_
+
+```bash
+sudo aprt install build-essential
+sudo apt install git cmake ninia-build curl zip unzip tar
+sudo apt install libwayland-dev libxkbcommon-dev wayland-protocols extra-cmake-modules
 ```
 
 #### Build
@@ -34,6 +44,13 @@ cmake --build . --config Release
 ```
 
 Binaries are placed into the `DaNCES_framework/bin` folder.
+
+#### Run the simulation
+
+```bash
+cd bin
+./dances
+```
 
 ### Windows
 
@@ -65,6 +82,12 @@ cmake --build . --config Release
 
 Binaries are placed into the `DaNCES_framework/bin` folder.
 
+#### Run the simulation
+
+```bash
+cd bin
+./dances
+```
 
 ## 3rd party libraries
 
