@@ -4,7 +4,7 @@ This is an agent-based model composed on the DaNCES framework, for DAta-iNspired
 
 Information about the model are given below, and details about the framework are presented in:
 
-_Papadopoulou M., Hildenbrandt H., Hemelrijk C.K. (2024) DaNCES: a framework for data-inspired agent-based models of collective escape. Accepted._
+_Papadopoulou M., Hildenbrandt H., Hemelrijk C.K. (2025) A data-inspired framework to simulate predator-prey systems in collective behaviour. Under review._
 
 
 ## Get started
@@ -17,7 +17,7 @@ _Papadopoulou M., Hildenbrandt H., Hemelrijk C.K. (2024) DaNCES: a framework for
 
 ```bash
 sudo apt install build-essential
-sudo apt install git cmake ninia-build curl zip unzip tar
+sudo apt install git cmake ninja-build curl zip unzip tar
 sudo apt install libxinerama-dev libxcursor-dev xorg-dev libglu1-mesa-dev pkg-config
 ```
 
@@ -25,7 +25,7 @@ sudo apt install libxinerama-dev libxcursor-dev xorg-dev libglu1-mesa-dev pkg-co
 
 ```bash
 sudo apt install build-essential
-sudo apt install git cmake ninia-build curl zip unzip tar
+sudo apt install git cmake ninja-build curl zip unzip tar
 sudo apt install libwayland-dev libxkbcommon-dev wayland-protocols extra-cmake-modules
 ```
 
@@ -112,6 +112,7 @@ The switch between states depends on a transition matrix that gives a probabilit
 
 ## _Parameters_
 All user-defined parameters are parsed by combining a series of .json files: *config.json* (simulation parameters), *imgui.json* (user interface parameters, for *Dear ImGui*), *prey.json* (prey parameters, here adjusted to starlings) and *predator.json* (predator parameters). Distance is measured in meters [m], time in seconds [s] and angles in degrees [deg].
+A *composed_config.json* file is created for each run (see *Data Collection* section below). If the user wants to run the model from the command line, a precomposed config file can be given through a 'config=composed_config.json' argument.
 
 ## _Individual Actions (or ISC units)_
 
