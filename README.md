@@ -74,7 +74,7 @@ git clone hrrps://github.com/marinapapa/DaNCES_framework.git
 cd DaNCES_framework
 git submodule update --init --remote --recursive
 cd vcpkg
-./bootstrap-vcpkg.sh -disableMetrics
+./bootstrap-vcpkg.bat -disableMetrics
 cd ..
 mkdir build && cd build
 cmake ..
