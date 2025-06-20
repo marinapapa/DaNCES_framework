@@ -31,13 +31,22 @@ namespace analysis
 				auto si = p.get_current_state();
 
 				const auto& all_nb = sim.sorted_view<Tag>(idx); // all neighbors
+				const auto& all_p = sim.sorted_view<Tag, pred_tag>(idx); // all predators
+
 				float nnd2 = 0; 
-				
+				float d2p = 0; 
+				glm::vec3 dir2nn = glm::vec3(0);
+
 				if (all_nb.size()) {
 					nnd2 = all_nb.cbegin()->dist2;
 					float nnid = all_nb.cbegin()->idx;
-			  }
+					
+					dir2nn = glm::normalize(math::ofs(p.pos, all_nb.cbegin()->pos));
 
+			  }
+				if (all_p.size()) {
+					d2p = all_p.cbegin()->dist2;
+				}
 
 				// copy into flat data store
 				const auto last = data_out_.size();
@@ -53,7 +62,10 @@ namespace analysis
 				*(++pf) = dist2cent;
 				*(++pf) = dir2fcent.x; *(++pf) = dir2fcent.y; *(++pf) = dir2fcent.z;
 				*(++pf) = nnd2;
+				*(++pf) = dir2nn.x; *(++pf) = dir2nn.y; *(++pf) = dir2nn.z;
+
 				*(++pf) = fl_id;
+				*(++pf) = d2p;
 
 			});
 		}

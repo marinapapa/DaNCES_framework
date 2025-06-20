@@ -19,6 +19,7 @@ namespace model {
   struct neighbor_info
   {
     float dist2;      // distance square
+    glm::vec3 pos;    // position
     unsigned idx;     // index of neighbor
     float stress;   
 

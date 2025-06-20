@@ -152,6 +152,7 @@ namespace model {
         for (unsigned j = 0; j < popj.size(); ++j, ++it) {
           *it = {
              glm::distance2(pos, popj[j].pos),
+             popj[j].pos,
              j,
              popj[j].stress,
              popj[j].get_current_state()

@@ -17,12 +17,12 @@
       "data_folder": "test",
       "Observers": [
         {
-          "type": "~TimeSeries",
-          "output_name": "timeseries",
-          "header": "time,id,posx,posy,posz,dirx,diry,dirz,speed,accelx,accely,accelz,state,substate,dist2fcent,dirX2fcent,dirY2fcent,dirZ2fcent,nnd2,flock_id",
-          "skip_csv": false,
-          "cached_rows": 10000,
-          "sample_freq": 0.2
+            "type": "~TimeSeries",
+            "output_name": "timeseries",
+            "header": "time,id,posx,posy,posz,dirx,diry,dirz,speed,accelx,accely,accelz,state,substate,dist2fcent,dirX2fcent,dirY2fcent,dirZ2fcent,nnd2,dirX2nn,dirY2nn,dirZ2nn,flock_id,dist22pred",
+            "skip_csv": false,
+            "cached_rows": 10000,
+            "sample_freq": 0.2
         },
         {
           "type": "~GroupData",

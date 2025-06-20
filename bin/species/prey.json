@@ -1,6 +1,6 @@
 {
   "Prey": {
-    "N": 20,
+    "N": 5,
     "shape": "arrow.ac",
     "scale": 1,
     "InitCondit": {
