@@ -4,8 +4,9 @@ This is an agent-based model composed on the DaNCES framework, for DAta-iNspired
 
 Information about the model are given below, and details about the framework are presented in:
 
-_Papadopoulou M., Hildenbrandt H., Hemelrijk C.K. (2025) A data-inspired framework to simulate predator-prey systems in collective behaviour. Under review._
+_Papadopoulou M., Hildenbrandt H., Hemelrijk C.K. (2025) A data-inspired framework to simulate collective behaviour of predator-prey systems._
 
+See also our simulator for a proposed repository structure to support the creation of reproducible pipelines for simulation runs and analysis through R: [github.com/marinapapa/DaNCES_simulator](github.com/marinapapa/DaNCES_simulator).
 
 ## Get started
 
@@ -43,7 +44,7 @@ cmake ..
 cmake --build . --config Release
 ```
 
-Binaries are placed into the `DaNCES_framework/bin` folder.
+Binaries are placed into the `DaNCES_framework/bin` folder. If the submodule for bootstrapping the vcpkg is not working we recommend cloning the repository manually within the DaNCES one from here: https://github.com/microsoft/vcpkg 
 
 #### Run the simulation
 
@@ -114,6 +115,8 @@ The switch between states depends on a transition matrix that gives a probabilit
 All user-defined parameters are parsed by combining a series of .json files: *config.json* (simulation parameters), *imgui.json* (user interface parameters, for *Dear ImGui*), *prey.json* (prey parameters, here adjusted to starlings) and *predator.json* (predator parameters). Distance is measured in meters [m], time in seconds [s] and angles in degrees [deg].
 A *composed_config.json* file is created for each run (see *Data Collection* section below). If the user wants to run the model from the command line, a precomposed config file can be given through a 'config=composed_config.json' argument.
 
+To modify a large number of configs and run simulations across the parameter space using R is supported by [rDaNCES](https://github.com/marinapapa/rDaNCES) package.
+
 ## _Individual Actions (or ISC units)_
 
 Actions are the basic elements controlling the movement of each agent in the simulations. Each action adds to the steering vector that controls the motion of the agent, so that the final steering force is the weighted sum of all actions. Each action has each own user-defined parameters. Multiple actions are combined to create *states*.
@@ -154,7 +157,7 @@ Default predator-agents actions:
     *  __chase_closest_prey__: the predator turns towards the closest prey-agent at every time point (target) and moves with a speed that scales from this agent's speed. Parameters: _prey_speed_scale_, _w_. 
     *  __lock_on_closest_prey__: the predator turns towards its target prey-agents, selected at the beginning of the attack (state-switch) as the closest prey. The predator moves with a speed that scales from this target's speed. Parameters: _prey_speed_scale_, _w_. 
     
-_Note_: More actions are included in the code (__actions__ folder) but are not active in the present state of the model. A description of each is given in the _Table1_ISCUnits.pdf_.
+_Note_: More actions are included in the code (__actions__ folder) but are not active in the present state of the model. A description of each is given in Table 1 of the manuscript.
 
 ## _Individual States_
 
@@ -184,7 +187,8 @@ The initial conditions of the agents are controlled by the user. Prey agents are
 
 ## _Data Collection_ 
 
-The model exports data in _.csv_ format. It creates a unique folder within the user-defined *data_folder* (in the config.json) in the repo's subdirectory *bin/sim_data*. In the created folder, it creates one or several .csv files for each Observer, as defined in the config file. Available observers are: 'TimeSeries', 'GroupData', and 'Diffusion'. The sampling frequency and output name of each csv file is also controled by the config. The whole composed config file is also copied to the saving directory. 
+The model exports data in _.csv_ format. It creates a unique folder within the user-defined *data_folder* (in the config.json) in the repo's subdirectory *bin/sim_data*. In the created folder, it creates one or several .csv files for each Observer, as defined in the config file. Available observers are: 'TimeSeries', 'GroupData', and 'Diffusion'. The sampling frequency and output name of each csv file is also controled by the config. The whole composed config file is also copied to the saving directory.
+An observer in the __config.json__ file can be deactivated by inserting an ~ in front of its name (as in the default config here). To activate an observer and collect data, just remove it (e.g., "~TimeSeries" --> "TimeSeries"). 
 
 
 ## Authors

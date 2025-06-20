@@ -33,7 +33,7 @@
           "sample_freq": 0.2
         },
         {
-          "type": "Diffusion",
+          "type": "~Diffusion",
           "output_name": "Diffusion",
           "header": "T0,Qm[30],R[30]",
           "skip_csv": false,

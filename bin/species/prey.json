@@ -1,6 +1,6 @@
 {
   "Prey": {
-    "N": 5,
+    "N": 20,
     "shape": "arrow.ac",
     "scale": 1,
     "InitCondit": {
@@ -71,7 +71,7 @@
             "name": "altitude_attraction",
             "pref_altitude": 0,
             "attr_smoothstep": [ 10, 20 ],
-            "smooth_range": 100,
+            "smooth_range": 20,
             "max_pitch": 20,
             "w": 0.1
           },
