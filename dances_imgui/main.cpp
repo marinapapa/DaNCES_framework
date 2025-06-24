@@ -66,15 +66,15 @@ void run(json& J)
 int main(int argc, const char* argv[])
 {
   try {
-    imgui_guard::init();
+    //imgui_guard::init();
     auto clp = cmd::cmd_line_parser(argc, argv);
     auto project_dir = exe_path::get();
     if (clp.optional("project", project_dir)) {
       project_dir = std::filesystem::absolute(project_dir);
     }
-    else if (!imgui_guard::gImgg()->headless()) {
+   // else if (!imgui_guard::gImgg()->headless()) {
       // ToDo: open file browser
-    }
+    //}
     if (!std::filesystem::is_directory(project_dir)) {
       throw std::runtime_error("can't open project directory");
     }
@@ -87,6 +87,8 @@ int main(int argc, const char* argv[])
     } 
 
     auto J = compose_json(project_dir, arg_config);
+    imgui_guard::init(J);
+
     run(J);
     return 0;
   }

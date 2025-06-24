@@ -23,9 +23,9 @@ struct font_descr
 
 class imgui_guard 
 {
-  imgui_guard();
+  imgui_guard(const json& J);
 public:
-  static void init();
+  static void init(const json& J);
   static imgui_guard* gImgg();
 
 public:

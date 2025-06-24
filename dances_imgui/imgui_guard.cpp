@@ -24,10 +24,10 @@ double imgui_guard::mouse_wheel() noexcept {
 }
 
 
-imgui_guard::imgui_guard() {
-  if (std::filesystem::exists(exe_path::get() / "imgui.json")) {
-    auto J = json::parse(std::ifstream(exe_path::get() / "imgui.json"));
-    if (!(headless_ = J["gui"]["headless"])) {
+imgui_guard::imgui_guard(const json& J) {
+  //if (std::filesystem::exists(exe_path::get() / "imgui.json")) {
+   // auto J = json::parse(std::ifstream(exe_path::get() / "imgui.json"));
+   if (!(headless_ = J["gui"]["headless"])) {
       // Setup window
       glfwSetErrorCallback(glfw_error_callback);
       if (!glfwInit()) {
@@ -106,7 +106,7 @@ imgui_guard::imgui_guard() {
       io.Fonts->AddFontDefault();
       io.Fonts->Build();
     }
-  }
+  
   // else headless_ = true
 }
 
@@ -193,8 +193,8 @@ namespace {
   std::unique_ptr<imgui_guard> globalImgg;
 }
 
-void imgui_guard::init() {
-  globalImgg.reset(new imgui_guard());
+void imgui_guard::init(const json& J) {
+  globalImgg.reset(new imgui_guard(J));
 }
 
 
