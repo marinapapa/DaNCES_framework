@@ -80,7 +80,8 @@ int main(int argc, const char* argv[])
     if (!jconfig.has_value()) throw std::runtime_error("config json doesn't exist or corrupted");
     auto J = jconfig.value();
 
-    auto inject = [&](const char* entry, std::string def) {
+    auto inject = [&](const char* entry) {
+      std::string def;
       if (clp.optional(entry, def)) {
         // mandatory cli override
         J[entry] = def;
@@ -92,10 +93,10 @@ int main(int argc, const char* argv[])
       }
       if (!J[entry].is_object()) throw std::runtime_error(std::string("entry ") + entry + " missing w/o default");
     };
-    inject("Prey", "./settings/prey.json");
-    inject("Pred", "./settings/predator.json");
-    inject("gui", "./imgui.json");
-    inject("Simulation", "");
+    inject("Prey");
+    inject("Pred");
+    inject("gui");
+    inject("Simulation");
 
     // single value overrides
     if (clp.flag("--headless")) {
