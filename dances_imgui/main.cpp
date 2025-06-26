@@ -66,29 +66,49 @@ void run(json& J)
 int main(int argc, const char* argv[])
 {
   try {
-    //imgui_guard::init();
     auto clp = cmd::cmd_line_parser(argc, argv);
     auto project_dir = exe_path::get();
     if (clp.optional("project", project_dir)) {
       project_dir = std::filesystem::absolute(project_dir);
+      if (!std::filesystem::is_directory(project_dir)) {
+        throw std::runtime_error("can't open project directory");
+      }
     }
-   // else if (!imgui_guard::gImgg()->headless()) {
-      // ToDo: open file browser
-    //}
-    if (!std::filesystem::is_directory(project_dir)) {
-      throw std::runtime_error("can't open project directory");
+    auto aconfig = std::string("config.json");
+    clp.optional("config", aconfig);
+    auto jconfig = from_path(project_dir / aconfig);
+    if (!jconfig.has_value()) throw std::runtime_error("config json doesn't exist or corrupted");
+    auto J = jconfig.value();
+
+    auto inject = [&](const char* entry, std::string def) {
+      if (clp.optional(entry, def)) {
+        // mandatory cli override
+        J[entry] = def;
+      }
+      if (J[entry].is_string()) {
+        auto jo = from_path(project_dir / J[entry]);
+        if (!jo.has_value()) throw std::runtime_error(std::string{entry} + " json missing or corrupt");
+        J[entry] = jo.value()[entry];
+      }
+      if (!J[entry].is_object()) throw std::runtime_error(std::string("entry ") + entry + " missing w/o default");
+    };
+    inject("Prey", "./settings/prey.json");
+    inject("Pred", "./settings/predator.json");
+    inject("gui", "./imgui.json");
+    inject("Simulation", "");
+
+    // single value overrides
+    if (clp.flag("--headless")) {
+      J.at("gui").at("headless") = true;
     }
-
-    // to not compose config but take pre-composed from command line
-    std::filesystem::path arg_config = "";
-
-    if ( clp.optional("config", arg_config )) {
-        arg_config = std::filesystem::absolute(arg_config);
-    } 
-
-    auto J = compose_json(project_dir, arg_config);
+    size_t Tmax = -1;
+    if (clp.optional("Tmax", Tmax)) {
+      J.at("Simulation").at("Tmax") = Tmax;
+    }
+    if ((true == J.at("gui").at("headless")) && (J.at("Simulation").at("Tmax").get<size_t>() == size_t(-1))) {
+      throw std::runtime_error("headless simulation would run forever");
+    }
     imgui_guard::init(J);
-
     run(J);
     return 0;
   }

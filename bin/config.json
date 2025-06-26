@@ -1,10 +1,9 @@
 {
+  "Prey": "./species/prey.json",
+  "Pred": "./species/predator.json",
+  "gui": "./imgui.json",
   "Simulation": {
-    "name": "composed_config.json",
-    "species_config": {
-      "prey": "species/prey.json",
-      "predator": "species/predator.json"
-    },
+    "name": "config.json",
     "dt": 0.001,
     "Tmax": 60,
     "groupDetection": {
