@@ -4,7 +4,7 @@ This is an agent-based model composed on the DaNCES framework, for DAta-iNspired
 
 Information about the model are given below, and details about the framework are presented in:
 
-_Papadopoulou M., Hildenbrandt H., Hemelrijk C.K. (2025) A data-inspired framework to simulate collective behaviour of predator-prey systems._
+_Papadopoulou M., Hildenbrandt H., Hemelrijk C.K. (2025) A data-inspired framework to simulate collective behaviour of predator-prey systems. Adaptive Behavior. doi:0.1177/10597123251364750_
 
 See also our simulator for a proposed repository structure to support the creation of reproducible pipelines for simulation runs and analysis through R: [github.com/marinapapa/DaNCES_simulator](github.com/marinapapa/DaNCES_simulator).
 
@@ -113,7 +113,7 @@ The switch between states depends on a transition matrix that gives a probabilit
 
 ## _Parameters_
 All user-defined parameters are parsed by combining a series of .json files: *config.json* (simulation parameters), *imgui.json* (user interface parameters, for *Dear ImGui*), *prey.json* (prey parameters, here adjusted to starlings) and *predator.json* (predator parameters). Distance is measured in meters [m], time in seconds [s] and angles in degrees [deg].
-A *composed_config.json* file is created for each run (see *Data Collection* section below). If the user wants to run the model from the command line, a precomposed config file can be given through a 'config=composed_config.json' argument.
+The *config.json* file is modified for each run to contain all the other individual config file information (see *Data Collection* section below). If the user wants to run the model from the command line, a precomposed config file can be given through a 'config=composed_config.json' argument.
 
 To modify a large number of configs and run simulations across the parameter space using R is supported by [rDaNCES](https://github.com/marinapapa/rDaNCES) package.
 
