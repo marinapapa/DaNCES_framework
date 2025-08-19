@@ -4,7 +4,7 @@ This is an agent-based model composed on the DaNCES framework, for DAta-iNspired
 
 Information about the model are given below, and details about the framework are presented in:
 
-_Papadopoulou M., Hildenbrandt H., Hemelrijk C.K. (2025) A data-inspired framework to simulate collective behaviour of predator-prey systems._
+_Papadopoulou M, Hildenbrandt H, Hemelrijk CK. (2025) A data-inspired framework to simulate collective behaviour of predator-prey systems. Adaptive Behavior, [doi: 10.1177/10597123251364750](https://doi.org/10.1177/10597123251364750)._
 
 See also our simulator for a proposed repository structure to support the creation of reproducible pipelines for simulation runs and analysis through R: [github.com/marinapapa/DaNCES_simulator](github.com/marinapapa/DaNCES_simulator).
 
